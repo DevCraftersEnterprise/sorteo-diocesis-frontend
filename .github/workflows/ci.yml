@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      VITE_API_URL: https://ci-placeholder.example.com/api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Verificar formato (Prettier)
+        run: npm run format:check
+
+      - name: Lint (sin autofix — debe fallar si hay algo mal, no corregirlo en silencio)
+        run: npm run lint:ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Tests unitarios
+        run: npm test
+
+      - name: Build de producción
+        run: npm run build
