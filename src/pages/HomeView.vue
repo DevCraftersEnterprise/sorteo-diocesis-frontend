@@ -95,7 +95,12 @@ async function submit(): Promise<void> {
 <template>
   <main>
     <form class="card" @submit.prevent="submit">
-      <h1>Sorteo Diócesis de Ciudad Obregón</h1>
+      <div class="header-row">
+        <h1>Sorteo Diócesis de Ciudad Obregón</h1>
+        <router-link to="/admin" class="admin-link" aria-label="Admin">
+          ⚙️
+        </router-link>
+      </div>
 
       <button type="button" class="photo-picker" @click="triggerPhotoPicker">
         <img
@@ -165,10 +170,25 @@ main {
   gap: 16px;
 }
 
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 0 8px;
+}
+
 h1 {
   font-size: 1.25rem;
   text-align: center;
-  margin: 0 0 8px;
+  margin: 0;
+}
+
+.admin-link {
+  position: absolute;
+  right: 0;
+  text-decoration: none;
+  font-size: 1.1rem;
 }
 
 .photo-picker {
