@@ -143,7 +143,7 @@ async function logout(): Promise<void> {
 
       <button
         type="submit"
-        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
         :disabled="loadingLogin"
       >
         {{ loadingLogin ? 'Entrando…' : 'Entrar' }}
@@ -159,7 +159,7 @@ async function logout(): Promise<void> {
       <button
         type="button"
         data-testid="download-zip-button"
-        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
         :disabled="loadingZip || loadingPurge"
         @click="downloadZip"
       >
@@ -169,7 +169,7 @@ async function logout(): Promise<void> {
       <button
         type="button"
         data-testid="purge-button"
-        class="rounded-xl bg-red-600 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+        class="rounded-xl bg-red-600 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-red-700 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
         :disabled="loadingZip || loadingPurge"
         @click="purgeDatabase"
       >
@@ -179,7 +179,7 @@ async function logout(): Promise<void> {
       <button
         type="button"
         data-testid="logout-button"
-        class="rounded-xl bg-slate-100 px-4 py-3.5 text-base font-semibold text-slate-700 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-60"
+        class="rounded-xl bg-slate-100 px-4 py-3.5 text-base font-semibold text-slate-700 transition-all duration-150 hover:-translate-y-0.5 hover:bg-slate-200 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
         :disabled="loadingZip || loadingPurge"
         @click="logout"
       >

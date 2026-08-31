@@ -121,7 +121,7 @@ async function submit(): Promise<void> {
 
       <button
         type="button"
-        class="flex h-52 w-full items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-500 transition hover:border-brand-400 hover:bg-brand-50 hover:text-brand-500"
+        class="flex h-52 w-full items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-500 transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-400 hover:bg-brand-50 hover:text-brand-500 hover:shadow-md active:translate-y-0"
         @click="triggerPhotoPicker"
       >
         <img
@@ -186,7 +186,7 @@ async function submit(): Promise<void> {
 
       <button
         type="submit"
-        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
         :disabled="loading"
       >
         {{ loading ? 'Guardando…' : 'Guardar' }}
