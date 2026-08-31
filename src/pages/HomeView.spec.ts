@@ -36,6 +36,12 @@ function fakeFile(): File {
   return new File(['bytes'], 'ine.jpg', { type: 'image/jpeg' });
 }
 
+function mountHomeView() {
+  return mount(HomeView, {
+    global: { stubs: { RouterLink: true } },
+  });
+}
+
 async function fillValidForm(wrapper: ReturnType<typeof mount>): Promise<void> {
   await wrapper.find('input[type="text"]').setValue('Juan Pérez');
   await wrapper.findAll('input[type="text"]')[1]!.setValue('7');
@@ -56,12 +62,12 @@ describe('HomeView', () => {
   });
 
   it('muestra el título del sorteo', () => {
-    const wrapper = mount(HomeView);
+    const wrapper = mountHomeView();
     expect(wrapper.text()).toContain('Sorteo Diócesis de Ciudad Obregón');
   });
 
   it('pide completar los campos si se manda vacío', async () => {
-    const wrapper = mount(HomeView);
+    const wrapper = mountHomeView();
 
     await wrapper.find('form').trigger('submit');
 
@@ -70,7 +76,7 @@ describe('HomeView', () => {
   });
 
   it('pide la foto si los campos están completos pero no hay foto', async () => {
-    const wrapper = mount(HomeView);
+    const wrapper = mountHomeView();
 
     await wrapper.find('input[type="text"]').setValue('Juan Pérez');
     await wrapper.findAll('input[type="text"]')[1]!.setValue('7');
@@ -82,7 +88,7 @@ describe('HomeView', () => {
   });
 
   it('rechaza una cartera fuera de rango sin llamar a la API', async () => {
-    const wrapper = mount(HomeView);
+    const wrapper = mountHomeView();
 
     await wrapper.find('input[type="text"]').setValue('Juan Pérez');
     await wrapper.findAll('input[type="text"]')[1]!.setValue('999');
@@ -110,7 +116,7 @@ describe('HomeView', () => {
       createdAt: '2026-01-01',
     });
 
-    const wrapper = mount(HomeView);
+    const wrapper = mountHomeView();
     await fillValidForm(wrapper);
     await wrapper.find('form').trigger('submit');
     await vi.waitFor(() => {
@@ -146,7 +152,7 @@ describe('HomeView', () => {
       }),
     );
 
-    const wrapper = mount(HomeView);
+    const wrapper = mountHomeView();
     await fillValidForm(wrapper);
     await wrapper.find('form').trigger('submit');
     await vi.waitFor(() => {
@@ -158,7 +164,7 @@ describe('HomeView', () => {
     getUploadSignatureMock.mockResolvedValue(signature);
     uploadPhotoMock.mockRejectedValue(new CloudinaryUploadError());
 
-    const wrapper = mount(HomeView);
+    const wrapper = mountHomeView();
     await fillValidForm(wrapper);
     await wrapper.find('form').trigger('submit');
     await vi.waitFor(() => {
