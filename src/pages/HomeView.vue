@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { Cog6ToothIcon } from '@heroicons/vue/24/outline';
 import { ApiError } from '../api/httpClient';
 import { createParticipant, getUploadSignature } from '../api/participants';
 import {
@@ -112,10 +113,10 @@ async function submit(): Promise<void> {
         </h1>
         <router-link
           to="/admin"
-          class="absolute right-0 text-lg opacity-60 transition hover:opacity-100"
+          class="absolute right-0 text-slate-500 opacity-60 transition hover:text-brand-500 hover:opacity-100"
           aria-label="Admin"
         >
-          ⚙️
+          <Cog6ToothIcon class="h-5 w-5" />
         </router-link>
       </div>
 
