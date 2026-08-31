@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ApiError, request } from './httpClient';
-import { exportZip, purgeAll } from './admin';
+import { exportZip, fetchUnpaid, markAsPaid, purgeAll } from './admin';
 
 vi.mock('./httpClient', async () => {
   const actual =
@@ -82,5 +82,65 @@ describe('exportZip', () => {
     await expect(
       exportZip({ Authorization: 'Bearer token-abc' }),
     ).rejects.toBeInstanceOf(ApiError);
+  });
+});
+
+describe('fetchUnpaid', () => {
+  it('hace GET a /admin/unpaid con Authorization y mapea wallet_number/created_at a camelCase', async () => {
+    requestMock.mockResolvedValue([
+      {
+        id: 'uuid-1',
+        name: 'Juan',
+        wallet_number: '007',
+        created_at: '2026-01-01',
+      },
+    ]);
+
+    const result = await fetchUnpaid(
+      { Authorization: 'Bearer token-abc' },
+      'Juan',
+    );
+
+    expect(request).toHaveBeenCalledWith('/admin/unpaid', {
+      headers: { Authorization: 'Bearer token-abc' },
+      query: { q: 'Juan' },
+    });
+    expect(result).toEqual([
+      {
+        id: 'uuid-1',
+        name: 'Juan',
+        walletNumber: '007',
+        createdAt: '2026-01-01',
+      },
+    ]);
+  });
+
+  it('manda q como undefined si no hay query (sin parámetro en la URL)', async () => {
+    requestMock.mockResolvedValue([]);
+
+    await fetchUnpaid({ Authorization: 'Bearer token-abc' });
+
+    expect(request).toHaveBeenCalledWith('/admin/unpaid', {
+      headers: { Authorization: 'Bearer token-abc' },
+      query: { q: undefined },
+    });
+  });
+});
+
+describe('markAsPaid', () => {
+  it('hace PUT a /admin/mark-paid con Authorization y solo walletNumber en el body', async () => {
+    requestMock.mockResolvedValue({ ok: true });
+
+    const result = await markAsPaid(
+      { Authorization: 'Bearer token-abc' },
+      '007',
+    );
+
+    expect(request).toHaveBeenCalledWith('/admin/mark-paid', {
+      method: 'PUT',
+      headers: { Authorization: 'Bearer token-abc' },
+      body: { walletNumber: '007' },
+    });
+    expect(result).toEqual({ ok: true });
   });
 });

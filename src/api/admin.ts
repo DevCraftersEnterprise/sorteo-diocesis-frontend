@@ -13,6 +13,53 @@ export interface PurgeSummary {
   failedPhotoDeletions: number;
 }
 
+export interface UnpaidParticipant {
+  id: string;
+  name: string;
+  walletNumber: string;
+  createdAt: string;
+}
+
+// El backend devuelve wallet_number en snake_case a propósito (era el
+// contrato real del cliente Flutter) -- se mapea a camelCase acá para
+// que el resto del frontend no tenga que pensar en eso.
+interface UnpaidParticipantRow {
+  id: string;
+  name: string;
+  wallet_number: string;
+  created_at: string;
+}
+
+export async function fetchUnpaid(
+  authHeaders: Record<string, string>,
+  query = '',
+): Promise<UnpaidParticipant[]> {
+  const rows = await request<UnpaidParticipantRow[]>('/admin/unpaid', {
+    headers: authHeaders,
+    query: { q: query || undefined },
+  });
+
+  return rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+    walletNumber: row.wallet_number,
+    createdAt: row.created_at,
+  }));
+}
+
+// adminEmail ya no se manda: el backend lo deriva del token verificado
+// y solo lo acepta por compatibilidad con el cliente Flutter (BUG-002).
+export function markAsPaid(
+  authHeaders: Record<string, string>,
+  walletNumber: string,
+): Promise<{ ok: true }> {
+  return request<{ ok: true }>('/admin/mark-paid', {
+    method: 'PUT',
+    headers: authHeaders,
+    body: { walletNumber },
+  });
+}
+
 const CONFIRM_PURGE_HEADER = 'X-Confirm-Purge';
 const CONFIRM_PURGE_VALUE = 'yes';
 
