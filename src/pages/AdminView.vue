@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { FirebaseError } from 'firebase/app';
 import { exportZip, purgeAll } from '../api/admin';
 import { ApiError } from '../api/httpClient';
@@ -19,6 +19,12 @@ const loadingLogin = ref(false);
 const loadingZip = ref(false);
 const loadingPurge = ref(false);
 const message = ref<{ type: 'success' | 'error'; text: string } | null>(null);
+
+const messageClasses = computed(() =>
+  message.value?.type === 'success'
+    ? 'bg-green-50 text-green-700'
+    : 'bg-red-50 text-red-700',
+);
 
 function errorMessage(error: unknown): string {
   if (error instanceof ApiError) return error.message;
@@ -94,39 +100,66 @@ async function logout(): Promise<void> {
 </script>
 
 <template>
-  <main>
-    <form v-if="!isLoggedIn" class="card" @submit.prevent="login">
-      <h1>Admin</h1>
+  <main
+    class="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 via-slate-100 to-slate-200 p-6"
+  >
+    <form
+      v-if="!isLoggedIn"
+      class="flex w-full max-w-sm flex-col gap-5 rounded-3xl bg-white p-8 shadow-xl ring-1 ring-black/5"
+      @submit.prevent="login"
+    >
+      <h1 class="text-center text-xl font-semibold text-brand-500">Admin</h1>
 
-      <label>
+      <label class="flex flex-col gap-1.5 text-sm font-medium text-slate-700">
         Email
-        <input v-model="email" type="email" autocomplete="username" />
+        <input
+          v-model="email"
+          type="email"
+          autocomplete="username"
+          class="rounded-xl border border-slate-300 px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+        />
       </label>
 
-      <label>
+      <label class="flex flex-col gap-1.5 text-sm font-medium text-slate-700">
         Contraseña
         <input
           v-model="password"
           type="password"
           autocomplete="current-password"
+          class="rounded-xl border border-slate-300 px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
         />
       </label>
 
-      <p v-if="message" :class="['message', message.type]" role="status">
+      <p
+        v-if="message"
+        :class="[
+          'rounded-xl px-3.5 py-2.5 text-sm font-medium',
+          messageClasses,
+        ]"
+        role="status"
+      >
         {{ message.text }}
       </p>
 
-      <button type="submit" class="primary" :disabled="loadingLogin">
+      <button
+        type="submit"
+        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
+        :disabled="loadingLogin"
+      >
         {{ loadingLogin ? 'Entrando…' : 'Entrar' }}
       </button>
     </form>
 
-    <div v-else class="card">
-      <h1>Admin</h1>
+    <div
+      v-else
+      class="flex w-full max-w-sm flex-col gap-4 rounded-3xl bg-white p-8 shadow-xl ring-1 ring-black/5"
+    >
+      <h1 class="text-center text-xl font-semibold text-brand-500">Admin</h1>
 
       <button
         type="button"
-        class="primary"
+        data-testid="download-zip-button"
+        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
         :disabled="loadingZip || loadingPurge"
         @click="downloadZip"
       >
@@ -135,7 +168,8 @@ async function logout(): Promise<void> {
 
       <button
         type="button"
-        class="danger"
+        data-testid="purge-button"
+        class="rounded-xl bg-red-600 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-red-700 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
         :disabled="loadingZip || loadingPurge"
         @click="purgeDatabase"
       >
@@ -144,103 +178,24 @@ async function logout(): Promise<void> {
 
       <button
         type="button"
-        class="secondary"
+        data-testid="logout-button"
+        class="rounded-xl bg-slate-100 px-4 py-3.5 text-base font-semibold text-slate-700 transition-all duration-150 hover:-translate-y-0.5 hover:bg-slate-200 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
         :disabled="loadingZip || loadingPurge"
         @click="logout"
       >
         Salir
       </button>
 
-      <p v-if="message" :class="['message', message.type]" role="status">
+      <p
+        v-if="message"
+        :class="[
+          'rounded-xl px-3.5 py-2.5 text-sm font-medium',
+          messageClasses,
+        ]"
+        role="status"
+      >
         {{ message.text }}
       </p>
     </div>
   </main>
 </template>
-
-<style scoped>
-main {
-  display: flex;
-  justify-content: center;
-  padding: 24px;
-  min-height: 100vh;
-}
-
-.card {
-  width: 100%;
-  max-width: 380px;
-  background: #fff;
-  border-radius: 20px;
-  padding: 32px 24px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-h1 {
-  font-size: 1.25rem;
-  text-align: center;
-  margin: 0 0 8px;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-input {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-}
-
-button {
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.primary {
-  background: #101541;
-  color: #fff;
-}
-
-.danger {
-  background: #d64545;
-  color: #fff;
-}
-
-.secondary {
-  background: #eee;
-  color: #333;
-}
-
-.message {
-  margin: 0;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-}
-
-.message.success {
-  background: #e6f6ea;
-  color: #1e7a34;
-}
-
-.message.error {
-  background: #fdeaea;
-  color: #a4222c;
-}
-</style>

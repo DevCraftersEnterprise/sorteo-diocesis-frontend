@@ -107,7 +107,9 @@ describe('AdminView', () => {
       exportZipMock.mockResolvedValue(fakeBlob);
       const wrapper = mountAdminView();
 
-      await wrapper.find('button.primary').trigger('click');
+      await wrapper
+        .find('[data-testid="download-zip-button"]')
+        .trigger('click');
       await vi.waitFor(() => {
         expect(downloadBlobMock).toHaveBeenCalled();
       });
@@ -128,7 +130,7 @@ describe('AdminView', () => {
       );
       const wrapper = mountAdminView();
 
-      await wrapper.find('button.danger').trigger('click');
+      await wrapper.find('[data-testid="purge-button"]').trigger('click');
 
       expect(purgeAllMock).not.toHaveBeenCalled();
       vi.unstubAllGlobals();
@@ -147,7 +149,7 @@ describe('AdminView', () => {
       });
       const wrapper = mountAdminView();
 
-      await wrapper.find('button.danger').trigger('click');
+      await wrapper.find('[data-testid="purge-button"]').trigger('click');
       await vi.waitFor(() => {
         expect(purgeAllMock).toHaveBeenCalled();
       });
@@ -174,7 +176,7 @@ describe('AdminView', () => {
       );
       const wrapper = mountAdminView();
 
-      await wrapper.find('button.danger').trigger('click');
+      await wrapper.find('[data-testid="purge-button"]').trigger('click');
       await vi.waitFor(() => {
         expect(wrapper.text()).toContain('No tienes permisos');
       });
@@ -185,7 +187,7 @@ describe('AdminView', () => {
       logoutMock.mockResolvedValue(undefined);
       const wrapper = mountAdminView();
 
-      await wrapper.find('button.secondary').trigger('click');
+      await wrapper.find('[data-testid="logout-button"]').trigger('click');
       await vi.waitFor(() => {
         expect(logoutMock).toHaveBeenCalled();
       });
