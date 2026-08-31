@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# SPA con vue-router en modo history: sin esto, refrescar o entrar
+# directo a /admin o /admin/unpaid da 404 (Netlify por defecto solo
+# sirve archivos que existen físicamente en dist/).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
