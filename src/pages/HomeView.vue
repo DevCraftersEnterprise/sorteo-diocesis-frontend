@@ -107,13 +107,14 @@ async function submit(): Promise<void> {
       class="flex w-full max-w-md flex-col gap-5 rounded-3xl bg-white p-8 shadow-xl ring-1 ring-black/5"
       @submit.prevent="submit"
     >
-      <div class="relative mb-1 flex items-center justify-center">
+      <div class="mb-1 flex items-center justify-between gap-2">
+        <span class="h-5 w-5 shrink-0" aria-hidden="true" />
         <h1 class="text-center text-xl font-semibold text-brand-500">
           Sorteo Diócesis de Ciudad Obregón
         </h1>
         <router-link
           to="/admin"
-          class="absolute right-0 text-slate-500 opacity-60 transition hover:text-brand-500 hover:opacity-100"
+          class="shrink-0 text-slate-500 opacity-60 transition hover:text-brand-500 hover:opacity-100"
           aria-label="Admin"
         >
           <Cog6ToothIcon class="h-5 w-5" />

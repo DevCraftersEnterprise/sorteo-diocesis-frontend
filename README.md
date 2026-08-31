@@ -30,6 +30,28 @@ npm run dev
 | `npm run test:coverage` | Vitest con reporte de cobertura          |
 | `npm run typecheck`     | Solo type-check (sin build)              |
 
+## Deploy (Netlify)
+
+El sitio se despliega en Netlify conectado directo a este repo.
+`netlify.toml` ya trae el build command, el publish dir (`dist`) y el
+redirect de SPA que necesita `vue-router` en modo history (sin eso,
+entrar directo a `/admin` o refrescar ahí da 404).
+
+Variables de entorno a configurar en Netlify (Site settings >
+Environment variables) — mismos nombres que `.env.example`, con los
+valores reales de producción:
+
+- `VITE_API_URL` — URL del backend en Render, con el prefijo `/api`
+  (ej. `https://sorteos-flutter-app-backend.onrender.com/api`).
+- `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`,
+  `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_APP_ID`,
+  `VITE_FIREBASE_MESSAGING_SENDER_ID` — los mismos valores que ya
+  tengas en tu `.env` local (misma app de Firebase que usa el
+  backend).
+
+Cada push a `main` dispara un deploy nuevo automáticamente una vez
+conectado el sitio.
+
 ## Estado
 
 Proyecto en migración activa desde la app Flutter. Ver las Etapas del
