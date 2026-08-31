@@ -13,6 +13,11 @@ const router = createRouter({
       name: 'admin',
       component: () => import('../pages/AdminView.vue'),
     },
+    {
+      path: '/admin/unpaid',
+      name: 'admin-unpaid',
+      component: () => import('../pages/UnpaidView.vue'),
+    },
   ],
 });
 

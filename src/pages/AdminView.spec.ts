@@ -32,7 +32,9 @@ vi.mock('../utils/downloadBlob', () => ({
 }));
 
 function mountAdminView() {
-  return mount(AdminView);
+  return mount(AdminView, {
+    global: { stubs: { RouterLink: true } },
+  });
 }
 
 describe('AdminView', () => {
