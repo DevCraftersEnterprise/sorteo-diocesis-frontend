@@ -18,6 +18,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.2.0",
     "firebase": "^12.18.0",
     "vue": "^3.5.41",
     "vue-router": "^4.6.4"

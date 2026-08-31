@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { Cog6ToothIcon } from '@heroicons/vue/24/outline';
 import { ApiError } from '../api/httpClient';
 import { createParticipant, getUploadSignature } from '../api/participants';
 import {
@@ -112,16 +113,16 @@ async function submit(): Promise<void> {
         </h1>
         <router-link
           to="/admin"
-          class="absolute right-0 text-lg opacity-60 transition hover:opacity-100"
+          class="absolute right-0 text-slate-500 opacity-60 transition hover:text-brand-500 hover:opacity-100"
           aria-label="Admin"
         >
-          ⚙️
+          <Cog6ToothIcon class="h-5 w-5" />
         </router-link>
       </div>
 
       <button
         type="button"
-        class="flex h-52 w-full items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-500 transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-400 hover:bg-brand-50 hover:text-brand-500 hover:shadow-md active:translate-y-0"
+        class="flex h-52 w-full cursor-pointer items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-500 transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-400 hover:bg-brand-50 hover:text-brand-500 hover:shadow-md active:translate-y-0"
         @click="triggerPhotoPicker"
       >
         <img
@@ -186,7 +187,7 @@ async function submit(): Promise<void> {
 
       <button
         type="submit"
-        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
+        class="cursor-pointer rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-md active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
         :disabled="loading"
       >
         {{ loading ? 'Guardando…' : 'Guardar' }}
