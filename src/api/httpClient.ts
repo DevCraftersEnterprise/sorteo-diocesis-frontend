@@ -37,7 +37,9 @@ export interface RequestOptions {
   query?: Record<string, string | undefined>;
 }
 
-function buildUrl(
+// Exportado: lo reutilizan los módulos que necesitan fetch crudo en
+// vez de request() (ej. admin.ts para descargar el ZIP binario).
+export function buildUrl(
   path: string,
   query?: Record<string, string | undefined>,
 ): string {
@@ -58,7 +60,10 @@ function buildUrl(
   return url;
 }
 
-async function toApiError(response: Response): Promise<ApiError> {
+// Exportado por la misma razón que buildUrl: los fetch crudos
+// también necesitan traducir una respuesta de error al mismo
+// ApiError que usa request().
+export async function parseApiError(response: Response): Promise<ApiError> {
   try {
     const body = (await response.json()) as Partial<ApiErrorBody>;
     return new ApiError({
@@ -97,7 +102,7 @@ export async function request<T>(
   });
 
   if (!response.ok) {
-    throw await toApiError(response);
+    throw await parseApiError(response);
   }
 
   if (response.status === 204) {
