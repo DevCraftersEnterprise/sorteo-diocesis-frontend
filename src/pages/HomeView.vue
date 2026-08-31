@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { ApiError } from '../api/httpClient';
 import { createParticipant, getUploadSignature } from '../api/participants';
 import {
@@ -17,6 +17,12 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const loading = ref(false);
 const message = ref<{ type: 'success' | 'error'; text: string } | null>(null);
+
+const messageClasses = computed(() =>
+  message.value?.type === 'success'
+    ? 'bg-green-50 text-green-700'
+    : 'bg-red-50 text-red-700',
+);
 
 function triggerPhotoPicker(): void {
   fileInput.value?.click();
@@ -93,185 +99,103 @@ async function submit(): Promise<void> {
 </script>
 
 <template>
-  <main>
-    <form class="card" @submit.prevent="submit">
-      <div class="header-row">
-        <h1>Sorteo Diócesis de Ciudad Obregón</h1>
-        <router-link to="/admin" class="admin-link" aria-label="Admin">
+  <main
+    class="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 via-slate-100 to-slate-200 p-6"
+  >
+    <form
+      class="flex w-full max-w-md flex-col gap-5 rounded-3xl bg-white p-8 shadow-xl ring-1 ring-black/5"
+      @submit.prevent="submit"
+    >
+      <div class="relative mb-1 flex items-center justify-center">
+        <h1 class="text-center text-xl font-semibold text-brand-500">
+          Sorteo Diócesis de Ciudad Obregón
+        </h1>
+        <router-link
+          to="/admin"
+          class="absolute right-0 text-lg opacity-60 transition hover:opacity-100"
+          aria-label="Admin"
+        >
           ⚙️
         </router-link>
       </div>
 
-      <button type="button" class="photo-picker" @click="triggerPhotoPicker">
+      <button
+        type="button"
+        class="flex h-52 w-full items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-500 transition hover:border-brand-400 hover:bg-brand-50 hover:text-brand-500"
+        @click="triggerPhotoPicker"
+      >
         <img
           v-if="photoPreviewUrl"
           :src="photoPreviewUrl"
           alt="Foto de INE tomada"
+          class="h-full w-full object-cover"
         />
-        <span v-else>Tocar para tomar foto de INE</span>
+        <span v-else class="px-4 text-center text-sm">
+          Tocar para tomar foto de INE
+        </span>
       </button>
       <input
         ref="fileInput"
         type="file"
         accept="image/*"
         capture="environment"
-        class="visually-hidden"
+        class="sr-only"
         @change="onPhotoSelected"
       />
 
-      <label>
+      <label class="flex flex-col gap-1.5 text-sm font-medium text-slate-700">
         Nombre completo
-        <input v-model="name" type="text" autocomplete="name" />
+        <input
+          v-model="name"
+          type="text"
+          autocomplete="name"
+          class="rounded-xl border border-slate-300 px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+        />
       </label>
 
-      <label>
+      <label class="flex flex-col gap-1.5 text-sm font-medium text-slate-700">
         Número de cartera
-        <input v-model="walletNumber" type="text" inputmode="numeric" />
+        <input
+          v-model="walletNumber"
+          type="text"
+          inputmode="numeric"
+          class="rounded-xl border border-slate-300 px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+        />
       </label>
 
-      <label>
+      <label class="flex flex-col gap-1.5 text-sm font-medium text-slate-700">
         Número de teléfono
-        <input v-model="phone" type="tel" autocomplete="tel" />
+        <input
+          v-model="phone"
+          type="tel"
+          autocomplete="tel"
+          class="rounded-xl border border-slate-300 px-3.5 py-2.5 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+        />
       </label>
 
-      <p v-if="message" :class="['message', message.type]" role="status">
+      <p
+        v-if="message"
+        :class="[
+          'rounded-xl px-3.5 py-2.5 text-sm font-medium',
+          messageClasses,
+        ]"
+        role="status"
+      >
         {{ message.text }}
       </p>
 
-      <button type="submit" class="submit" :disabled="loading">
+      <button
+        type="submit"
+        class="rounded-xl bg-brand-500 px-4 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+        :disabled="loading"
+      >
         {{ loading ? 'Guardando…' : 'Guardar' }}
       </button>
 
-      <p class="notice">
+      <p class="text-center text-xs text-slate-500">
         Aviso: la foto se guarda en almacenamiento privado y el teléfono se
         protege.
       </p>
     </form>
   </main>
 </template>
-
-<style scoped>
-main {
-  display: flex;
-  justify-content: center;
-  padding: 24px;
-  min-height: 100vh;
-}
-
-.card {
-  width: 100%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 20px;
-  padding: 32px 24px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.header-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin: 0 0 8px;
-}
-
-h1 {
-  font-size: 1.25rem;
-  text-align: center;
-  margin: 0;
-}
-
-.admin-link {
-  position: absolute;
-  right: 0;
-  text-decoration: none;
-  font-size: 1.1rem;
-}
-
-.photo-picker {
-  height: 200px;
-  border: 2px dashed #ccc;
-  border-radius: 16px;
-  background: #f7f7f8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  cursor: pointer;
-  padding: 0;
-  overflow: hidden;
-}
-
-.photo-picker img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-input[type='text'],
-input[type='tel'] {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-}
-
-.message {
-  margin: 0;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-}
-
-.message.success {
-  background: #e6f6ea;
-  color: #1e7a34;
-}
-
-.message.error {
-  background: #fdeaea;
-  color: #a4222c;
-}
-
-.submit {
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  background: #101541;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.notice {
-  margin: 0;
-  font-size: 0.75rem;
-  color: #777;
-  text-align: center;
-}
-</style>
