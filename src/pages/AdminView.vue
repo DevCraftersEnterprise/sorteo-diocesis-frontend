@@ -166,6 +166,13 @@ async function logout(): Promise<void> {
         {{ loadingZip ? 'Descargando…' : 'Descargar ZIP' }}
       </button>
 
+      <router-link
+        to="/admin/unpaid"
+        class="cursor-pointer rounded-xl bg-slate-100 px-4 py-3.5 text-center text-base font-semibold text-slate-700 transition-all duration-150 hover:-translate-y-0.5 hover:bg-slate-200 hover:shadow-md active:translate-y-0"
+      >
+        Carteras sin pagar
+      </router-link>
+
       <button
         type="button"
         data-testid="purge-button"
