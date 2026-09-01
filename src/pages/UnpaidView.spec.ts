@@ -40,6 +40,13 @@ describe('UnpaidView', () => {
     expect(fetchUnpaidMock).not.toHaveBeenCalled();
   });
 
+  it('muestra un link para volver a /admin', () => {
+    const wrapper = mountUnpaidView();
+
+    const backLink = wrapper.find('router-link-stub[to="/admin"]');
+    expect(backLink.exists()).toBe(true);
+  });
+
   describe('con sesión activa', () => {
     beforeEach(() => {
       isLoggedIn.value = true;

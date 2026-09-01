@@ -76,16 +76,16 @@ onMounted(() => {
     class="flex min-h-screen justify-center bg-gradient-to-br from-brand-50 via-slate-100 to-slate-200 p-6"
   >
     <div class="w-full max-w-lg">
-      <div class="relative mb-4 flex items-center justify-center">
-        <h1 class="text-center text-xl font-semibold text-brand-500">
-          Carteras sin pagar
-        </h1>
+      <div class="mb-4 flex items-center gap-3">
         <router-link
           to="/admin"
-          class="absolute left-0 text-sm text-brand-500 hover:underline"
+          class="flex shrink-0 cursor-pointer items-center gap-1 rounded-xl bg-white px-3 py-2 text-sm font-semibold text-brand-500 shadow-sm ring-1 ring-black/5 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-50 hover:shadow-md active:translate-y-0"
         >
           ← Volver
         </router-link>
+        <h1 class="flex-1 text-center text-xl font-semibold text-brand-500">
+          Carteras sin pagar
+        </h1>
       </div>
 
       <div

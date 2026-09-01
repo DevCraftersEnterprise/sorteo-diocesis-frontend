@@ -51,6 +51,13 @@ describe('AdminView', () => {
       expect(wrapper.find('input[type="password"]').exists()).toBe(true);
     });
 
+    it('muestra un link para volver al registro (ej. tras cerrar sesión)', () => {
+      const wrapper = mountAdminView();
+
+      const backLink = wrapper.find('router-link-stub[to="/"]');
+      expect(backLink.exists()).toBe(true);
+    });
+
     it('pide completar email y contraseña', async () => {
       const wrapper = mountAdminView();
 
