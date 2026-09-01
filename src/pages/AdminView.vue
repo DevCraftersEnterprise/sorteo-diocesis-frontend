@@ -108,6 +108,13 @@ async function logout(): Promise<void> {
       class="flex w-full max-w-sm flex-col gap-5 rounded-3xl bg-white p-8 shadow-xl ring-1 ring-black/5"
       @submit.prevent="login"
     >
+      <router-link
+        to="/"
+        class="flex w-fit cursor-pointer items-center gap-1 self-start rounded-xl bg-white px-3 py-2 text-sm font-semibold text-brand-500 shadow-sm ring-1 ring-black/5 transition-all duration-150 hover:-translate-y-0.5 hover:bg-brand-50 hover:shadow-md active:translate-y-0"
+      >
+        ← Volver al registro
+      </router-link>
+
       <h1 class="text-center text-xl font-semibold text-brand-500">Admin</h1>
 
       <label class="flex flex-col gap-1.5 text-sm font-medium text-slate-700">
