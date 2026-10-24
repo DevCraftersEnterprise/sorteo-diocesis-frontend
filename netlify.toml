@@ -3,7 +3,7 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "22"
+  NODE_VERSION = "22.23.4"
 
 # SPA con vue-router en modo history: sin esto, refrescar o entrar
 # directo a /admin o /admin/unpaid da 404 (Netlify por defecto solo
